@@ -17,6 +17,10 @@ class MainViewModel : ViewModel() {
     private val mutableGamesData = MutableLiveData<UiState<List<Game>>>()
     val immutableGamesData: LiveData<UiState<List<Game>>> = mutableGamesData
 
+    val filterQuery = MutableLiveData("")
+    fun updateFilterQuery(text: String){
+        filterQuery.postValue(text)
+    }
    fun getData() {
        mutableGamesData.postValue(UiState(isLoading = true))
        viewModelScope.launch(Dispatchers.IO) {
@@ -35,4 +39,6 @@ class MainViewModel : ViewModel() {
             }
         }
     }
+
+
 }

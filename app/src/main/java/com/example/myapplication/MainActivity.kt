@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -20,13 +21,23 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,12 +63,19 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyApplicationTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    MainView(viewModel = viewModel,
+                    Scaffold (
+                        topBar = {MyTopView(viewModel = viewModel)}
+                    ){ scaffoldPaddings ->
+                    MainView(
+                        modifier = Modifier.padding(scaffoldPaddings),
+                        viewModel = viewModel,
                         onClick = {id -> navigateToDetails(id)})
+                    }
                 }
             }
         }
     }
+
     private fun navigateToDetails(id: Int){
         val intent = Intent(this, DetailsActivity::class.java)
         intent.putExtra("CUSTOM_ID", "$id")
@@ -66,8 +84,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainView(viewModel: MainViewModel, onClick: (Int) -> Unit) {
+fun MainView(modifier: Modifier, viewModel: MainViewModel, onClick: (Int) -> Unit) {
     val uiState by viewModel.immutableGamesData.observeAsState(UiState())
+    val query by viewModel.filterQuery.observeAsState("")
+
     when{
        uiState.isLoading  -> {
             CircularProgressIndicator(
@@ -78,17 +98,20 @@ fun MainView(viewModel: MainViewModel, onClick: (Int) -> Unit) {
             Toast.makeText(LocalContext.current, "${uiState.error}", Toast.LENGTH_SHORT ).show()
         }
         uiState.data != null -> {
-            uiState.data?.let { games ->
-                LazyColumn(
-                    modifier = Modifier
+            uiState.data?.let { restGames ->
+                restGames.filter { it.title.contains(query, true) }.let { games ->
+                    LazyColumn(
+                        modifier = Modifier
                         .fillMaxSize()
                         .padding(16.dp)
-
-                    )  {
-                    items(games) { game ->
-                        GameView(game = game, onClick = {id -> onClick.invoke(id)})
-                    }
+                        .padding(top = 70.dp)
+            )  {
+                items(games) { game ->
+                    GameView(game = game, onClick = {id -> onClick.invoke(id)})
                 }
+            }
+            }
+
             }
         }
         else ->{
@@ -141,7 +164,38 @@ fun GameView(game: Game, onClick: (Int) -> Unit) {
     }
     Spacer(modifier = Modifier.height(12.dp))
 }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MyTopView(viewModel: MainViewModel) {
+    var searchText by remember { mutableStateOf("") }
 
+    SearchBar(
+        modifier = Modifier.fillMaxWidth()
+            .padding(16.dp),
+        query = searchText,
+        onQueryChange = { wpisywanyTekst -> searchText = wpisywanyTekst },
+        onSearch = { viewModel.updateFilterQuery(it) },
+        placeholder = { Text(text = "Wyszukaj...") },
+        active = false,
+        onActiveChange = { },
+        leadingIcon = {
+            Icon(imageVector = Icons.Default.Search, contentDescription = "Search")
+        },
+        trailingIcon = {
+            Image(
+                modifier = Modifier.clickable {
+                    searchText = ""
+                    viewModel.updateFilterQuery("")
+                },
+                imageVector = Icons.Default.Clear,
+                contentDescription = "Clear"
+                )
+            }
+
+        ) {
+
+        }
+}
 
 
 //@Preview(showBackground = true)

@@ -53,8 +53,7 @@ class DetailsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val id = intent.getStringExtra("CUSTOM_ID") ?: "error"
-        Toast.makeText(this, "$id", Toast.LENGTH_SHORT).show()
-        Log.d("DetailsActivity", "Received ID: $id")
+//        Toast.makeText(this, "$id", Toast.LENGTH_SHORT).show()
         viewModel.loadDetailsData(id)
 
         setContent {
