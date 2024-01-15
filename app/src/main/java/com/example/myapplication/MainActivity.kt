@@ -111,7 +111,6 @@ fun MainView(modifier: Modifier, viewModel: MainViewModel, onClick: (Int) -> Uni
                 }
             }
             }
-
             }
         }
         else ->{
