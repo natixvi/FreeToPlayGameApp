@@ -10,9 +10,7 @@ import com.example.myapplication.repository.GameRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
-
-    private val gameRepository = GameRepository()
+class MainViewModel( private val gameRepository: GameRepository) : ViewModel() {
 
     private val mutableGamesData = MutableLiveData<UiState<List<Game>>>()
     val immutableGamesData: LiveData<UiState<List<Game>>> = mutableGamesData

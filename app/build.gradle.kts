@@ -59,6 +59,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-text-android:1.5.4")
     implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
 
+    implementation("io.insert-koin:koin-core:3.5.3")
+    implementation("io.insert-koin:koin-android:3.5.3")
+
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 

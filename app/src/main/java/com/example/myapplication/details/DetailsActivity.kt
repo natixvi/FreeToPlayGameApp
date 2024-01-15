@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -45,10 +44,10 @@ import com.example.myapplication.R
 import com.example.myapplication.UiState
 import com.example.myapplication.repository.model.Game
 import com.example.myapplication.ui.theme.MyApplicationTheme
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 class DetailsActivity : ComponentActivity() {
 
-    private val viewModel: DetailsViewModel by viewModels()
+    private val viewModel: DetailsViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
