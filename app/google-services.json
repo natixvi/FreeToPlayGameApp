@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1028367687908",
+    "project_id": "free-to-play-game-adcde",
+    "storage_bucket": "free-to-play-game-adcde.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028367687908:android:c99c3317a7d8dfe7c80cf1",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0YguErmyO3H1v3DTkUFStn8D4-msLxzg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

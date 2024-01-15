@@ -58,6 +58,7 @@ class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         viewModel.getData()
         setContent {
             MyApplicationTheme {
